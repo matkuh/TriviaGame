@@ -1,4 +1,4 @@
-var timeRemaining = 30;
+var timeRemaining = 5;
 var intervalID;
 var numCorrect = 0;
 var incorrect = 0;
@@ -97,12 +97,12 @@ $("#questionBox").html("<p>" + "Incorrect!  " + "The Correct Answer Is: " + ques
 currentQuestion++
 }
 
-// function timesUp(){}
-//     setTimeout(function(){$("#questionBox").html("<p>" + questions[currentQuestion].Q + "</p>" + " <button class=' answer-button'>" + questions[currentQuestion].a1 + "</button>" + "<button class='answer-button'>" + questions[currentQuestion].a2 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a3 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a4 + "</button>");
-// }, 3000);
-// $("#questionBox").html("<p>" + "Times Up!  " + "The Correct Answer Is: " + questions[currentQuestion].correct + "</p>" + "<img src='images/wrongans.gif'")
-// currentQuestion++
-
+function timesUp(){
+    setTimeout(function(){$("#questionBox").html("<p>" + questions[currentQuestion].Q + "</p>" + " <button class=' answer-button'>" + questions[currentQuestion].a1 + "</button>" + "<button class='answer-button'>" + questions[currentQuestion].a2 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a3 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a4 + "</button>");
+}, 3000);
+$("#questionBox").html("<p>" + "Times Up!  " + "The Correct Answer Is: " + questions[currentQuestion].correct + "</p>" + "<img src='images/wrongans.gif'")
+currentQuestion++
+}
 
 function displayResults(){
         $("#questionBox").html("<p>" + "Correct Answers " + numCorrect + "</p>" + "<p>" + "Incorrect Answers " + incorrect + "</p>")
@@ -137,12 +137,15 @@ $("#questionBox").html("<button class='start'>" + "Start" + "</button>")
 
 $(".start").on("click", function() {
 
+timer();
+
     $("#questionBox").html("<p>" + q1.Q + "</p>" + " <button class='answer-button'>" + q1.a1 + "</button>" + "<button class='answer-button'>" + q1.a2 + "</button>" + "<button class='answer-button'>" + q1.a3 + "</button>" + "<button class='answer-button'>" + q1.a4 + "</button>")
 
 })
 })
 
 $(document).on("click", ".answer-button", function(event) {
+    timer();
     var button = $(this).text();
     if ((button === questions[currentQuestion].correct) && (currentQuestion < 7) && (timeRemaining > 0)){
         numCorrect++
@@ -150,7 +153,7 @@ $(document).on("click", ".answer-button", function(event) {
         endGame();
     } else if (timeRemaining === 0){
         unAnswered++
-        // timesUp();
+        timesUp();
     }
     
     
