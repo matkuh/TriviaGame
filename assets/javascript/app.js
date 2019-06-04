@@ -3,12 +3,6 @@ var correct = 0;
 var clockRunning = false;
 var question1 = "";
 
-var startScreen = {
-    s: "Start"
-}
-
-
-
 var q1 = {
     Q: "What is your favorite board game?",
     a1: "Chess",
@@ -36,12 +30,54 @@ var q3 = {
     correct: "Jerry"
 }
 
+var q4 = {
+    Q: "Who is the coolest",
+    a1: "Jim",
+    a2: "Jerry",
+    a3: "Billy",
+    a4: "Bob",
+    correct: "Jerry"
+}
+
+var q5 = {
+    Q: "Who is the coolest",
+    a1: "Jim",
+    a2: "Jerry",
+    a3: "Billy",
+    a4: "Bob",
+    correct: "Jerry"
+}
+
+var q6 = {
+    Q: "Who is the coolest",
+    a1: "Jim",
+    a2: "Jerry",
+    a3: "Billy",
+    a4: "Bob",
+    correct: "Jerry"
+}
+
 var currentQuestion = 0;
-var questions = [q1, q2, q3];
+var questions = [q1, q2, q3, q4, q5, q6];
+
+function displayResults(){
+    if (currentQuestion === 6){
+        $("#questionBox").html("<p>" + "Correct" + correct + "/6" + "</p>")
+    }
+}
+
+function resetGame(){
+    correct = 0;
+    $("#questionBox").html("<button id='restart'>" + "Restart" + "</button>")
+    $("#start").on("click", function() {
+        $("#questionBox").html("<button id='start'>" + "Start" + "</button>")
+})
+}
+
 
 $(document).ready(function(){
 
-$("#questionBox").append("<button id='start'>" + startScreen.s + "</button>")
+$("#questionBox").html("<button id='start'>" + "Start" + "</button>")
 
 $("#start").on("click", function() {
 
@@ -53,30 +89,17 @@ $("#start").on("click", function() {
 $(document).on("click", ".answer-button", function(event) {
     event.preventDefault();
     var button = $(this).text();
-    console.log(button);
     if ((button === questions[currentQuestion].correct) && (currentQuestion < 3)){
         alert("correct!")
         correct++
-        // increment correct answers
-        // display updated number of correct answers
-        // display next question and buttons
         currentQuestion++;
 
         $("#questionBox").html("<p>" + questions[currentQuestion].Q + "</p>" + " <button class=' answer-button'>" + questions[currentQuestion].a1 + "</button>" + "<button class='answer-button'>" + questions[currentQuestion].a2 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a3 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a4 + "</button>")
 
-    } else if (currentQuestion === 3){
-
-        $("#questionBox").html("<p>" + "Correct" + correct + "/3" + "</p>")
-    
-    
-    
     } else {
         alert("incorrect!")
         currentQuestion++
-        
         $("#questionBox").html("<p>" + questions[currentQuestion].Q + "</p>" + " <button class=' answer-button'>" + questions[currentQuestion].a1 + "</button>" + "<button class='answer-button'>" + questions[currentQuestion].a2 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a3 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a4 + "</button>")
-        // increment incorrect
-        // display next 
     } 
 
 })
