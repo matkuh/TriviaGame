@@ -97,6 +97,7 @@ $("#questionBox").html("<p>" + "Correct!" + "</p>" + '<img src="assets/images/ri
 currentQuestion++
 resetTime();
 timer();
+endGame();
 }
 
 function wrongAnswer(){
@@ -106,6 +107,7 @@ $("#questionBox").html("<p>" + "Incorrect!  " + "The Correct Answer Is: " + ques
 currentQuestion++
 resetTime();
 timer();
+endGame();
 }
 
 function timesUp(){
@@ -115,6 +117,7 @@ $("#questionBox").html("<p>" + "Times Up!  " + "The Correct Answer Is: " + quest
 currentQuestion++
 resetTime();
 timer();
+endGame();
 }
 
 function displayResults(){
@@ -122,15 +125,18 @@ function displayResults(){
     }
 
 function resetGame(){
+    stopTimer();
+    $("#questionBox").append("<button id='restart'>" + "Restart" + "</button>")
+    $("#restart").on("click", function() {
     numCorrect = 0;
     incorrect = 0;
     unAnswered = 0;
     currentQuestion = 0;
-    $("#questionBox").append("<button id='restart'>" + "Restart" + "</button>")
-    $("#restart").on("click", function() {
         $("#questionBox").html("<button class='start'>" + "Start" + "</button>")
 
 $(".start").on("click", function() {
+
+timer();
 
     $("#questionBox").html("<p>" + q1.Q + "</p>" + " <button class='answer-button'>" + q1.a1 + "</button>" + "<button class='answer-button'>" + q1.a2 + "</button>" + "<button class='answer-button'>" + q1.a3 + "</button>" + "<button class='answer-button'>" + q1.a4 + "</button>")
 })
@@ -142,6 +148,7 @@ function endGame(){
         displayResults();
         resetGame();
         resetTime();
+        return;
     }
 }
 
@@ -165,12 +172,10 @@ $(document).on("click", ".answer-button", function(event) {
         stopTimer();
         numCorrect++
         rightAnswer();
-        endGame();
     }  else {
         stopTimer();
         incorrect++
         wrongAnswer();
-        endGame();
 
     } 
 
