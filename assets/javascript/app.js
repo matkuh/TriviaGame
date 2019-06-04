@@ -1,4 +1,4 @@
-var timeRemaining = 5;
+var timeRemaining = 10;
 var intervalID;
 var numCorrect = 0;
 var incorrect = 0;
@@ -64,16 +64,17 @@ var currentQuestion = 0;
 var questions = [q1, q2, q3, q4, q5, q6];
 
 function timer(){
-    clearInterval()   
+    if (!clockRunning){
     intervalID = setInterval(decrement, 1000);
-    }
+    clockRunning = true;
+    }}
 
 
 function decrement(){
-    timeRemaining--;
     $("#timer").html("<h2>" + "Time Remaining: " + timeRemaining + "</h2>")
+    timeRemaining--;
     if (timeRemaining === 0){
-        unAnswered++
+        unAnswered++;
         stopTimer();
         timesUp();
     }
@@ -84,27 +85,35 @@ function stopTimer(){
     clearInterval(intervalID);
 }
 
+function resetTime(){
+    timeRemaining = 10;
+    $("#timer").html("<h2>" + "Time Remaining: " + timeRemaining + "</h2>")
+}
+
 function rightAnswer(){
     setTimeout(function(){$("#questionBox").html("<p>" + questions[currentQuestion].Q + "</p>" + " <button class=' answer-button'>" + questions[currentQuestion].a1 + "</button>" + "<button class='answer-button'>" + questions[currentQuestion].a2 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a3 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a4 + "</button>");
-}, 3000);
-$("#questionBox").html("<p>" + "Correct!" + "</p>" + '<img src="../images/rightans.gif" width="200" height="200" />')
+}, 2000);
+$("#questionBox").html("<p>" + "Correct!" + "</p>" + '<img src="assets/images/rightans.gif" width="200" height="200" />')
 currentQuestion++
+resetTime();
 timer();
 }
 
 function wrongAnswer(){
     setTimeout(function(){$("#questionBox").html("<p>" + questions[currentQuestion].Q + "</p>" + " <button class=' answer-button'>" + questions[currentQuestion].a1 + "</button>" + "<button class='answer-button'>" + questions[currentQuestion].a2 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a3 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a4 + "</button>");
-}, 3000);
-$("#questionBox").html("<p>" + "Incorrect!  " + "The Correct Answer Is: " + questions[currentQuestion].correct + "</p>" + '<img src="../images/wrongans.gif" width="200" height="200" />')
+}, 2000);
+$("#questionBox").html("<p>" + "Incorrect!  " + "The Correct Answer Is: " + questions[currentQuestion].correct + "</p>" + '<img src="assets/images/wrongans.gif" width="200" height="200" />')
 currentQuestion++
+resetTime();
 timer();
 }
 
 function timesUp(){
     setTimeout(function(){$("#questionBox").html("<p>" + questions[currentQuestion].Q + "</p>" + " <button class=' answer-button'>" + questions[currentQuestion].a1 + "</button>" + "<button class='answer-button'>" + questions[currentQuestion].a2 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a3 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a4 + "</button>");
-}, 3000);
-$("#questionBox").html("<p>" + "Incorrect!  " + "The Correct Answer Is: " + questions[currentQuestion].correct + "</p>" + '<img src="../images/wrongans.gif" width="200" height="200" />')
+}, 2000);
+$("#questionBox").html("<p>" + "Times Up!  " + "The Correct Answer Is: " + questions[currentQuestion].correct + "</p>" + '<img src="assets/images/wrongans.gif" width="200" height="200" />')
 currentQuestion++
+resetTime();
 timer();
 }
 
@@ -149,14 +158,15 @@ timer();
 })
 
 $(document).on("click", ".answer-button", function(event) {
-    stopTimer();
     answered = true;
     var button = $(this).text();
     if ((button === questions[currentQuestion].correct) && (currentQuestion < 7)){
+        stopTimer();
         numCorrect++
         rightAnswer();
         endGame();
     }  else {
+        stopTimer();
         incorrect++
         wrongAnswer();
         endGame();
