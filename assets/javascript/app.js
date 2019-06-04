@@ -1,4 +1,4 @@
-var timeRemaining = 10;
+var timeRemaining = 30;
 var intervalID;
 var numCorrect = 0;
 var incorrect = 0;
@@ -52,12 +52,12 @@ var q5 = {
 }
 
 var q6 = {
-    Q: "Who is the coolest",
-    a1: "Jim",
-    a2: "Jerry",
-    a3: "Billy",
-    a4: "Bob",
-    correct: "Jerry"
+    Q: "What is the name of Jeromes Cat?",
+    a1: "Asher",
+    a2: "Bacon",
+    a3: "Farley",
+    a4: "Cheddar",
+    correct: "Farley"
 }
 
 var currentQuestion = 0;
@@ -86,7 +86,7 @@ function stopTimer(){
 }
 
 function resetTime(){
-    timeRemaining = 10;
+    timeRemaining = 30;
     $("#timer").html("<h2>" + "Time Remaining: " + timeRemaining + "</h2>")
 }
 
@@ -118,7 +118,7 @@ timer();
 }
 
 function displayResults(){
-        $("#questionBox").html("<p>" + "Correct Answers " + numCorrect + "</p>" + "<p>" + "Incorrect Answers " + incorrect + "</p>")
+        $("#questionBox").html("<p>" + "Correct Answers: " + numCorrect + "</p>" + "<p>" + "Incorrect Answers: " + incorrect + "</p>" + "<p>" + "Unanswered: " + unAnswered + "</p>")
     }
 
 function resetGame(){
@@ -141,6 +141,7 @@ function endGame(){
     if (currentQuestion === 6){
         displayResults();
         resetGame();
+        resetTime();
     }
 }
 
