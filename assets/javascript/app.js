@@ -1,5 +1,5 @@
 var timeRemaining = 30;
-var correct = 0;
+var numCorrect = 0;
 var incorrect = 0;
 var clockRunning = false;
 
@@ -57,8 +57,6 @@ var q6 = {
     correct: "Jerry"
 }
 
-
-
 var currentQuestion = 0;
 var questions = [q1, q2, q3, q4, q5, q6];
 
@@ -78,26 +76,34 @@ function rightAnswer(){
     setTimeout(function(){$("#questionBox").html("<p>" + questions[currentQuestion].Q + "</p>" + " <button class=' answer-button'>" + questions[currentQuestion].a1 + "</button>" + "<button class='answer-button'>" + questions[currentQuestion].a2 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a3 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a4 + "</button>");
 }, 3000);
 $("#questionBox").html("<p>" + "Correct!" + "</p>" + "<img src='images/rightans.gif'")
+currentQuestion++
 }
 
 function wrongAnswer(){
     setTimeout(function(){$("#questionBox").html("<p>" + questions[currentQuestion].Q + "</p>" + " <button class=' answer-button'>" + questions[currentQuestion].a1 + "</button>" + "<button class='answer-button'>" + questions[currentQuestion].a2 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a3 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a4 + "</button>");
 }, 3000);
 $("#questionBox").html("<p>" + "Incorrect!" + "</p>" + "<img src='images/wrongans.gif'")
+currentQuestion++
 }
 
 function displayResults(){
-        $("#questionBox").html("<p>" + "Correct Answers " + correct + "</p>" + "<p>" + "Incorrect Answers " + incorrect + "</p>")
-        resetGame();
+        $("#questionBox").html("<p>" + "Correct Answers " + numCorrect + "</p>" + "<p>" + "Incorrect Answers " + incorrect + "</p>")
     }
 
-
 function resetGame(){
-    $("#questionBox").html("<button id='restart'>" + "Restart" + "</button>")
+    $("#questionBox").append("<button id='restart'>" + "Restart" + "</button>")
     $("#restart").on("click", function() {
         $("#questionBox").html("<button class='start'>" + "Start" + "</button>")
-        correct = 0;
+        numCorrect = 0;
+        currentQuestion = 0;
 })
+}
+
+function endGame(){
+    if (currentQuestion === 6){
+        displayResults();
+        resetGame();
+    }
 }
 
 
@@ -113,19 +119,15 @@ $(".start").on("click", function() {
 
 $(document).on("click", ".answer-button", function(event) {
     var button = $(this).text();
-    displayResults();
     console.log(currentQuestion);
-    if ((button === questions[currentQuestion].correct) && (currentQuestion < 5)){
-        correct++
-        currentQuestion++;
+    if ((button === questions[currentQuestion].correct) && (currentQuestion < 7) && (timeRemaining > 0)){
+        numCorrect++
         rightAnswer();
-    } else if (currentQuestion === 5){
-        displayResults();
-
-      } else {
+        endGame();
+    } else {
         incorrect++
-        currentQuestion++
         wrongAnswer();
+        endGame();
 
     } 
 
