@@ -4,6 +4,7 @@ var numCorrect = 0;
 var incorrect = 0;
 var clockRunning = false;
 var unAnswered = 0;
+var answered = false;
 
 var q1 = {
     Q: "What is the only U.S. state that only borders one other?",
@@ -86,22 +87,25 @@ function stopTimer(){
 function rightAnswer(){
     setTimeout(function(){$("#questionBox").html("<p>" + questions[currentQuestion].Q + "</p>" + " <button class=' answer-button'>" + questions[currentQuestion].a1 + "</button>" + "<button class='answer-button'>" + questions[currentQuestion].a2 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a3 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a4 + "</button>");
 }, 3000);
-$("#questionBox").html("<p>" + "Correct!" + "</p>" + "<img src='images/rightans.gif'")
+$("#questionBox").html("<p>" + "Correct!" + "</p>" + '<img src="../images/rightans.gif" width="200" height="200" />')
 currentQuestion++
+timer();
 }
 
 function wrongAnswer(){
     setTimeout(function(){$("#questionBox").html("<p>" + questions[currentQuestion].Q + "</p>" + " <button class=' answer-button'>" + questions[currentQuestion].a1 + "</button>" + "<button class='answer-button'>" + questions[currentQuestion].a2 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a3 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a4 + "</button>");
 }, 3000);
-$("#questionBox").html("<p>" + "Incorrect!  " + "The Correct Answer Is: " + questions[currentQuestion].correct + "</p>" + "<img src='images/wrongans.gif'")
+$("#questionBox").html("<p>" + "Incorrect!  " + "The Correct Answer Is: " + questions[currentQuestion].correct + "</p>" + '<img src="../images/wrongans.gif" width="200" height="200" />')
 currentQuestion++
+timer();
 }
 
 function timesUp(){
     setTimeout(function(){$("#questionBox").html("<p>" + questions[currentQuestion].Q + "</p>" + " <button class=' answer-button'>" + questions[currentQuestion].a1 + "</button>" + "<button class='answer-button'>" + questions[currentQuestion].a2 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a3 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a4 + "</button>");
 }, 3000);
-$("#questionBox").html("<p>" + "Times Up!  " + "The Correct Answer Is: " + questions[currentQuestion].correct + "</p>" + "<img src='images/wrongans.gif'")
+$("#questionBox").html("<p>" + "Incorrect!  " + "The Correct Answer Is: " + questions[currentQuestion].correct + "</p>" + '<img src="../images/wrongans.gif" width="200" height="200" />')
 currentQuestion++
+timer();
 }
 
 function displayResults(){
@@ -145,19 +149,14 @@ timer();
 })
 
 $(document).on("click", ".answer-button", function(event) {
-    timer();
+    stopTimer();
+    answered = true;
     var button = $(this).text();
-    if ((button === questions[currentQuestion].correct) && (currentQuestion < 7) && (timeRemaining > 0)){
+    if ((button === questions[currentQuestion].correct) && (currentQuestion < 7)){
         numCorrect++
         rightAnswer();
         endGame();
-    } else if (timeRemaining === 0){
-        unAnswered++
-        timesUp();
-    }
-    
-    
-    else {
+    }  else {
         incorrect++
         wrongAnswer();
         endGame();
