@@ -1,4 +1,4 @@
-var timeRemaining = 30000;
+var timeRemaining = 30;
 var correct = 0;
 var incorrect = 0;
 var clockRunning = false;
@@ -62,30 +62,49 @@ var q6 = {
 var currentQuestion = 0;
 var questions = [q1, q2, q3, q4, q5, q6];
 
-setTimeout(function(rightAnswer){
-    $("#questionBox").html()
+function timer(){
+    if (!clockRunning){
+        timeRemaining = setInterval(decrement, 1000);
+        clockRunning = true;
+    }
+}
+
+function timeUpdate(){
+    $("#timer").html("<h2>" + "Time Remaining: " + timeRemaining + "</h2>")
+    timeRemaining--;
+}
+
+function rightAnswer(){
+    setTimeout(function(){$("#questionBox").html("<p>" + questions[currentQuestion].Q + "</p>" + " <button class=' answer-button'>" + questions[currentQuestion].a1 + "</button>" + "<button class='answer-button'>" + questions[currentQuestion].a2 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a3 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a4 + "</button>");
+}, 3000);
+$("#questionBox").html("<p>" + "Correct!" + "</p>" + "<img src='images/rightans.gif'")
+}
+
+function wrongAnswer(){
+    setTimeout(function(){$("#questionBox").html("<p>" + questions[currentQuestion].Q + "</p>" + " <button class=' answer-button'>" + questions[currentQuestion].a1 + "</button>" + "<button class='answer-button'>" + questions[currentQuestion].a2 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a3 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a4 + "</button>");
+}, 3000);
+$("#questionBox").html("<p>" + "Incorrect!" + "</p>" + "<img src='images/wrongans.gif'")
 }
 
 function displayResults(){
-    if (currentQuestion === 6){
         $("#questionBox").html("<p>" + "Correct Answers " + correct + "</p>" + "<p>" + "Incorrect Answers " + incorrect + "</p>")
-        return 
+        resetGame();
     }
-}
+
 
 function resetGame(){
     $("#questionBox").html("<button id='restart'>" + "Restart" + "</button>")
     $("#restart").on("click", function() {
-        $("#questionBox").html("<button id='start'>" + "Start" + "</button>")
+        $("#questionBox").html("<button class='start'>" + "Start" + "</button>")
         correct = 0;
 })
 }
 
 
 $(document).ready(function(){
-$("#questionBox").html("<button id='start'>" + "Start" + "</button>")
+$("#questionBox").html("<button class='start'>" + "Start" + "</button>")
 
-$("#start").on("click", function() {
+$(".start").on("click", function() {
 
     $("#questionBox").html("<p>" + q1.Q + "</p>" + " <button class='answer-button'>" + q1.a1 + "</button>" + "<button class='answer-button'>" + q1.a2 + "</button>" + "<button class='answer-button'>" + q1.a3 + "</button>" + "<button class='answer-button'>" + q1.a4 + "</button>")
 
@@ -93,20 +112,21 @@ $("#start").on("click", function() {
 })
 
 $(document).on("click", ".answer-button", function(event) {
-    event.preventDefault();
     var button = $(this).text();
-    if ((button === questions[currentQuestion].correct) && (currentQuestion < 7)){
-        alert("correct!")
+    displayResults();
+    console.log(currentQuestion);
+    if ((button === questions[currentQuestion].correct) && (currentQuestion < 5)){
         correct++
         currentQuestion++;
+        rightAnswer();
+    } else if (currentQuestion === 5){
+        displayResults();
 
-        $("#questionBox").html("<p>" + questions[currentQuestion].Q + "</p>" + " <button class=' answer-button'>" + questions[currentQuestion].a1 + "</button>" + "<button class='answer-button'>" + questions[currentQuestion].a2 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a3 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a4 + "</button>")
-
-    } else {
-        alert("incorrect!")
+      } else {
         incorrect++
         currentQuestion++
-        $("#questionBox").html("<p>" + questions[currentQuestion].Q + "</p>" + " <button class=' answer-button'>" + questions[currentQuestion].a1 + "</button>" + "<button class='answer-button'>" + questions[currentQuestion].a2 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a3 + "</button>" + "<button class = 'answer-button'>" + questions[currentQuestion].a4 + "</button>")
+        wrongAnswer();
+
     } 
 
 })
